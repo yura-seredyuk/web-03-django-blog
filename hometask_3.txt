@@ -1,0 +1,8 @@
+CLASSWORK: https://github.com/yura-seredyuk/web-03-django-blog
+    commits: Added mail send and 404 error handler, Added Login for users
+
+
+Завдання:
+    Додати кнопку "Log in" користувача на header
+    При вдалій автентифікації відобразити на хедері ім'я юзера кнопку "Log out"
+    Додати метод Log out

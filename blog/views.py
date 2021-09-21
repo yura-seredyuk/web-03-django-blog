@@ -3,9 +3,12 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 from blog import *
 from .models import Post
-from .forms import PostForm, ContactForm
+from .forms import PostForm, ContactForm, LoginForm
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
+from django.contrib import messages
+
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
 # GET METHOD
@@ -56,6 +59,7 @@ def post_delete(request, pk):
         return render(request, 'blog/post_lists.html', {'posts':posts})
 
 # SEND MAIL
+
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -70,8 +74,31 @@ def contact(request):
             message = "\n".join(body.values())
             try:
                 send_mail(subject, message, 'from@mail.com', ['to_help@mail.com'])
+
             except BadHeaderError:
                 return HttpResponse('Find incorrect header!')
-            return redirect('post_list')
+            messages.success(request, "Message sent." )
+            return redirect('contact')
+        messages.error(request, "Error. Message not sent.")
     form = ContactForm()
     return render(request, 'blog/contact.html', {'form':form})
+
+# LOGIN
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            client_data = form.cleaned_data
+            user = authenticate(username=client_data['username'], password=client_data['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponse('Authenticated successful!')
+                else:
+                    return HttpResponse('User blocked!')
+            else:
+                return HttpResponse('User not found!')
+    else:
+        form = LoginForm()
+    return render(request, 'blog/login.html', {'form':form})
+        
