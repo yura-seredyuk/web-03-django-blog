@@ -6,7 +6,9 @@
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <a href="{% url 'post_detail' pk=pk %}">Cancel</a>
+            {% if 'edit' in request.build_absolute_uri %}
+                <a href="{% url 'post_detail' pk=pk %}">Cancel</a>
+            {% endif %}
             <button type="submit">Save</button>
         </form>
 {% endblock %}

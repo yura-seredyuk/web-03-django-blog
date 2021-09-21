@@ -23,3 +23,5 @@ urlpatterns = [
     # path('', include('blog.urls')),
     re_path(r'', include('blog.urls')),
 ]
+
+handler404 = "mysite.views.page_not_found"
