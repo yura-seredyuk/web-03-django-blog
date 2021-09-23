@@ -1,0 +1,5 @@
+CLASSWORK: https://github.com/yura-seredyuk/web-03-django-blog
+    commits: Added media and filters
+
+Завдання:
+	Налаштувати зовнішній вигляд адмін панелі
